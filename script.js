@@ -6,7 +6,7 @@
 
 const accaunt1 = {
     owner: 'Imomali Fayzullayev',
-    movements: [200, 450, -400, -650, 130, 70, 1300],
+    movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
     interestRate: 1.2,
     pin: 1111,
 };
@@ -63,8 +63,40 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 //                         gooo               //
 
+const displayMovements  = function (movements) {
+    containerMovements.innerHTML = '';
+    movements.forEach((mov, index)=>{
+        const type = mov > 0 ? 'deposit' : 'withdrawal';
+        const html = `
+            <div class="movements__row">
+                <div class="movements__type movements__type--${type}">${index}</div>
+                <div class="movements__value">${mov}</div>
+            </div>
+        `;
+        containerMovements.insertAdjacentHTML('afterbegin', html);
+    })
+}
+displayMovements(accaunt1.movements);
 
 
+
+
+
+
+
+
+
+// Coding challenge
+1.
+const juliaceDogs = [3, 5, 2, 12, 7];
+const  KatesDogs = [4, 1, 15, 8, 3];
+const copyjuliace = [...juliaceDogs.slice(0,3)];
+console.log(copyjuliace);
+
+
+const checkDogs = function (array1 , array2) {
+    const dogsKatty = array1.slice(0,3)
+}
 
 
 
