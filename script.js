@@ -253,6 +253,9 @@ console.log(totalDepositUSD);
 const first = movementsArr.find((value)=> value < 0);
 console.log(first);
 
+const accaunt = accaunts.find((user) => user.owner === 'Jessica Davis');
+console.log(accaunt);
+
 
 
 
