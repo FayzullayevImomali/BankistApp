@@ -41,7 +41,7 @@ const labelData = document.querySelector('.date');
 const labeleBalance = document.querySelector('.balance__value');
 const labalSumIn = document.querySelector('.summary__value--in');
 const labelSumOut  = document.querySelector('.summary__value--out');
-const labelSumInterest = document.querySelector('.summary__value--in');
+const labelSumInterest = document.querySelector('.summay__value--interest');
 const labelTimer = document.querySelector('.timer');
 
 const containerApp = document.querySelector('.app');
@@ -70,7 +70,7 @@ const displayMovements  = function (movements) {
         const html = `
             <div class="movements__row">
                 <div class="movements__type movements__type--${type}">${index}</div>
-                <div class="movements__value">${mov}</div>
+                <div class="movements__value">${mov} EUR</div>
             </div>
         `;
         containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -84,7 +84,30 @@ const calcDisplayBalance = function (movements) {
     },0);
     labeleBalance.textContent = `${balance} UZS`;
 }
-calcDisplayBalance(accaunt1.movements)
+calcDisplayBalance(accaunt1.movements);
+
+const calcDisplaySummary = function (movements) {
+    const incomes = movements
+        .filter((mov)=> mov > 0)
+        .reduce((accum, mov)=> accum + mov, 0 );
+    labalSumIn.textContent = `${incomes} EUR`;
+
+    const outgoing = movements
+        .filter((mov)=> mov < 0)
+        .reduce((accum, mov)=> accum + mov, 0);
+    labelSumOut.textContent = `${Math.abs(outgoing)} EUR`;   
+    
+    const interest = movements
+        .filter((mov)=> mov > 0)
+        .map((deposit) => (deposit * 1.2) / 100)
+        .filter((int, i, arr) => {
+            return int >= 1;
+        })
+        .reduce((accum, interest)=> accum + interest, 0)
+    labelSumInterest.textContent = `${interest} EUR`;      
+}
+
+calcDisplaySummary(accaunt1.movements)
 
 const createUserName = function (accs) {
     accs.forEach(function (acc) {
@@ -97,7 +120,6 @@ const createUserName = function (accs) {
 };
 
 createUserName(accaunts);
-console.log(accaunts);
 
 
 
@@ -134,7 +156,7 @@ console.log(accaunts);
 
 // const movementCopy = [5000, 3400, -150, -790, 3210, 1000, 8500, -30];
 
-// const euroToUsd = 1.1;
+const euroToUsd = 1.1;
 
 // const movementUSD =  movementCopy.map(mov => mov * euroToUsd ); //With Arrow function 
 
@@ -157,76 +179,82 @@ console.log(accaunts);
 
 //                                       Filter method                    //
 
-const movementsArr = [232, -2334, 5000, 12000, -6840, -9000, 5600];
+ const movementsArr = [232, -2334, 5000, 12000, -6840, -9000, 5600];
 
-const deposits = movementsArr.filter(function(mov) {
-    return mov > 0;
-});
+// const deposits = movementsArr.filter(function(mov) {
+//     return mov > 0;
+// });
 
-console.log(deposits);
+// console.log(deposits);
 
-const withdrawal = [232, -2334, 5000, 43000, -6840, -9000, 5600];
+// const withdrawal = [232, -2334, 5000, 43000, -6840, -9000, 5600];
 
-const spendDeposits = withdrawal.filter(function (value) {
-    return value < 0;
-});
+// const spendDeposits = withdrawal.filter(function (value) {
+//     return value < 0;
+// });
 
-console.log(spendDeposits);
-
-
-
-//                                        Reduce method                         //
-
-const balance = movementsArr.reduce((accum, current, index, array) => {
-    console.log(`Iteration ${index}: ${accum}`);
-    return accum + current;
-},0);
-
-console.log(balance);
-
-// Maximum value from array using REDUCE method 
-
-const max = movementsArr.reduce((acc, mov)=> {
-    if(acc > mov) return acc;
-    else return mov;
-}, movementsArr[0]);
-
-console.log(max);
+// console.log(spendDeposits);
 
 
-//                                Coding challenge 2                  //
 
-//map 
-//filter
-//reduce
+// //                                        Reduce method                         //
+
+// const balance = movementsArr.reduce((accum, current, index, array) => {
+//     console.log(`Iteration ${index}: ${accum}`);
+//     return accum + current;
+// },0);
+
+// console.log(balance);
+
+// // Maximum value from array using REDUCE method 
+
+// const max = movementsArr.reduce((acc, mov)=> {
+//     if(acc > mov) return acc;
+//     else return mov;
+// }, movementsArr[0]);
+
+// console.log(max);
+
+
+// //                                Coding challenge 2                  //
+
+// //map 
+// //filter
+// //reduce
 
 const calcAverageHumanAga = function(ages) {
-    const humanAges =  ages.map(function(dogAge) {
-        if(dogAge <= 2) {
-            return dogAge * 2;
-        } else {
-        return (dogAge * 4) + 16; 
-        }
-        // dogAge => dogAge <= 2 ? 2 * dogAge : 16 + dogAge * 4
-    });
-    const adultAges = humanAges.filter(function(age) {
-        return age >= 18;
-    });
-    console.log(adultAges)
-    const summDogAges = adultAges.reduce(function(accum, current){
-        return accum + current;
-    }, 0);
-
+    const humanAges =  ages
+    .map((dogAge)=>(dogAge <= 2 ? 2 * dogAge : 16 + dogAge * 4))
+    .filter((age)=> age >= 18)
+    .reduce((accum, age, i, arr) => accum + age / arr.length, 0);
     // const average = adultAges.reduce((acc, age, i, arr) {
     //     acc + age / arr.length;
     // })
-
-    const average = Math.trunc( summDogAges / adultAges.length);
    
-    console.log(`The Average ages of dog's is ${average}`);
+    console.log(`The Average ages of dog's is ${Math.trunc(humanAges)}`);
 }
 calcAverageHumanAga( [5, 2, 4, 1, 15, 8, 3]);
 calcAverageHumanAga( [16, 6, 10, 5, 6, 1, 4]);
+
+//                                     Chaining methods                   //
+
+const totalDepositUSD = movementsArr
+    .filter(mov=> mov > 0)
+    .map((mov, i , arr) => {return mov * euroToUsd;})
+    .reduce((acc, current)=> acc + current, 0);
+
+console.log(totalDepositUSD);
+
+
+
+//                                          The Find method                 //
+
+
+const first = movementsArr.find((value)=> value < 0);
+console.log(first);
+
+
+
 
 
 
