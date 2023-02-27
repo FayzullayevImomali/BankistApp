@@ -121,6 +121,24 @@ const createUserName = function (accs) {
 
 createUserName(accaunts);
 
+//Event handler
+let currentAccaunt;
+
+btnLogin.addEventListener('click', (e)=> {
+    //Prevent form from submitting
+    e.preventDefault();
+    currentAccaunt = accaunts.find(acc => acc.username === inputLoginUsername.value);
+    console.log(currentAccaunt);
+
+    if(currentAccaunt?.pin === Number(inputLoginPin.value)) {
+        // Display UI and message
+        // Display movements
+        // Display balance
+        // Display summary
+        console.log('Login!');
+    }
+});
+
 
 
 
