@@ -48,7 +48,7 @@ const containerApp = document.querySelector('.app');
 const containerMovements = document.querySelector('.movements');
 
 const btnLogin = document.querySelector('.login__btn');
-const btnTransfer = document.querySelector('.form__btm--transfer');
+const btnTransfer = document.querySelector('.form__btn--transfer');
 const btnLoan = document.querySelector('.form__btn--loan');
 const btnClose = document.querySelector('.form__btn--close');
 const btnSort = document.querySelector('.btn-sort');
@@ -76,30 +76,30 @@ const displayMovements  = function (movements) {
         containerMovements.insertAdjacentHTML('afterbegin', html);
     })
 }
-displayMovements(accaunt1.movements);
 
-const calcDisplayBalance = function (movements) {
-    const balance = movements.reduce((accum, current)=> {
+
+const calcDisplayBalance = function (accaunt) {
+    accaunt.balance = accaunt.movements.reduce((accum, current)=> {
         return accum + current;
     },0);
-    labeleBalance.textContent = `${balance} UZS`;
+    labeleBalance.textContent = `${accaunt.balance} UZS`;
 }
-calcDisplayBalance(accaunt1.movements);
 
-const calcDisplaySummary = function (movements) {
-    const incomes = movements
+
+const calcDisplaySummary = function (accaunt) {
+    const incomes = accaunt.movements
         .filter((mov)=> mov > 0)
         .reduce((accum, mov)=> accum + mov, 0 );
     labalSumIn.textContent = `${incomes} EUR`;
 
-    const outgoing = movements
+    const outgoing = accaunt.movements
         .filter((mov)=> mov < 0)
         .reduce((accum, mov)=> accum + mov, 0);
     labelSumOut.textContent = `${Math.abs(outgoing)} EUR`;   
     
-    const interest = movements
+    const interest = accaunt.movements
         .filter((mov)=> mov > 0)
-        .map((deposit) => (deposit * 1.2) / 100)
+        .map((deposit) => (deposit * accaunt.interestRate) / 100)
         .filter((int, i, arr) => {
             return int >= 1;
         })
@@ -107,7 +107,6 @@ const calcDisplaySummary = function (movements) {
     labelSumInterest.textContent = `${interest} EUR`;      
 }
 
-calcDisplaySummary(accaunt1.movements)
 
 const createUserName = function (accs) {
     accs.forEach(function (acc) {
@@ -116,7 +115,7 @@ const createUserName = function (accs) {
         .split(' ')
         .map((name) => name[0]).join('');
     });
-
+    console.log(accaunts);
 };
 
 createUserName(accaunts);
@@ -127,18 +126,47 @@ let currentAccaunt;
 btnLogin.addEventListener('click', (e)=> {
     //Prevent form from submitting
     e.preventDefault();
-    currentAccaunt = accaunts.find(acc => acc.username === inputLoginUsername.value);
-    console.log(currentAccaunt);
+    currentAccaunt = accaunts.find((acc)=> acc.username === inputLoginUsername.value);
+    
 
     if(currentAccaunt?.pin === Number(inputLoginPin.value)) {
-        // Display UI and message
-        // Display movements
-        // Display balance
-        // Display summary
+    // Display UI and message
+        labelWelcome.textContent = `Welcome back, ${currentAccaunt.owner.split(' ')[0]}`;
+        containerApp.style.opacity = 100;
+
+    //Clear input field
+        inputLoginUsername.value = inputLoginPin.value = '';
+        inputLoginPin.blur();
+
+    // Display movements
+        displayMovements(currentAccaunt.movements);
+    // Display balance
+        calcDisplayBalance(currentAccaunt);
+    // Display summary
+        calcDisplaySummary(currentAccaunt);
         console.log('Login!');
     }
 });
 
+// Transfering amount
+
+btnTransfer.addEventListener('click', function(e) {
+    e.preventDefault();
+    const amount = Number(inputTransferAmount.value);
+    const receriverAcc = accaunts.find(
+        acc => acc.username === inputTransferTo.value);
+    console.log(amount, receriverAcc); 
+    
+    if(
+        amount > 0 &&
+        currentAccaunt.balance >= amount &&
+        receriverAcc?.username !== currentAccaunt.username
+    ) {
+        console.log(`Transfer valid!`)
+    }
+    
+});
+console.log(btnTransfer);
 
 
 
