@@ -159,10 +159,12 @@ btnTransfer.addEventListener('click', function(e) {
     
     if(
         amount > 0 &&
+        receriverAcc &&
         currentAccaunt.balance >= amount &&
         receriverAcc?.username !== currentAccaunt.username
     ) {
-        console.log(`Transfer valid!`)
+        currentAccaunt.movements.push(-amount);
+        receriverAcc.push(amount);
     }
     
 });
