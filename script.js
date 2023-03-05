@@ -33,7 +33,14 @@ const accaunt4 = {
     pin: 3333,
 };
 
-const accaunts = [accaunt1, accaunt2, accaunt3, accaunt4];
+const accaunt5 = {
+    owner: 'Jones Schmadtmenn',
+    movements: [430, 1000, 700, 50, 90],
+    interestRate: 1,
+    pin: 5555,
+};
+
+const accaunts = [accaunt1, accaunt2, accaunt3, accaunt4, accaunt5];
 
 //                  Elements          //
 const labelWelcome = document.querySelector('.welcome');
@@ -120,6 +127,15 @@ const createUserName = function (accs) {
 
 createUserName(accaunts);
 
+const updateUI = function (acc) {
+    // Display movements
+        displayMovements(acc?.movements);
+    // Display balance
+        calcDisplayBalance(acc);
+    // Display summary
+        calcDisplaySummary(acc);
+}
+
 //Event handler
 let currentAccaunt;
 
@@ -136,41 +152,58 @@ btnLogin.addEventListener('click', (e)=> {
 
     //Clear input field
         inputLoginUsername.value = inputLoginPin.value = '';
-        inputLoginPin.blur();
-
-    // Display movements
-        displayMovements(currentAccaunt.movements);
-    // Display balance
-        calcDisplayBalance(currentAccaunt);
-    // Display summary
-        calcDisplaySummary(currentAccaunt);
-        console.log('Login!');
+        
     }
+    inputLoginPin.blur();  
+    // Update UI
+    updateUI(currentAccaunt);
+    
 });
 
 // Transfering amount
 
-btnTransfer.addEventListener('click', function(e) {
+btnTransfer.addEventListener('click', (e)=> {
     e.preventDefault();
     const amount = Number(inputTransferAmount.value);
-    const receriverAcc = accaunts.find(
-        acc => acc.username === inputTransferTo.value);
-    console.log(amount, receriverAcc); 
+    const receiverAcc = accaunts.find((acc) => acc.username === inputTransferTo.value);
     
-    if(
-        amount > 0 &&
-        currentAccaunt.balance >= amount &&
-        receriverAcc?.username !== currentAccaunt.username
+    if( amount > 0 && 
+        receiverAcc &&
+        receiverAcc?.username !== currentAccaunt.username &&
+        currentAccaunt.balance >= amount
     ) {
-        console.log(`Transfer valid!`)
+        currentAccaunt.movements.push(-amount);
+        receiverAcc.movements.push(amount);
+        // Update UI
+        updateUI(currentAccaunt);
+    }
+    inputTransferAmount.value = inputTransferTo.value = '';
+
+});
+
+btnClose.addEventListener('click', (e)=> {
+    e.preventDefault();
+    if(
+        inputCloseUsername.value === currentAccaunt.username &&
+        Number(inputClosePin.value) === currentAccaunt.pin
+    ) {
+       const index = accaunts.findIndex((acc)=> acc.username === currentAccaunt.username);
+       // DELETE accaunt
+       accaunts.splice(index, 1);
+       //HIDE accaunts
+       containerApp.style.opacity = 0;
+
     }
     
+    inputCloseUsername.value = inputClosePin.value = '';
 });
-console.log(btnTransfer);
 
 
 
 
+const myFish = ["angel", "clown", "mandarin", "sturgeon"];
+const removed = myFish.splice(2, 0, "drum");
+console.log(myFish);
 
 
 
@@ -268,39 +301,39 @@ const euroToUsd = 1.1;
 // //filter
 // //reduce
 
-const calcAverageHumanAga = function(ages) {
-    const humanAges =  ages
-    .map((dogAge)=>(dogAge <= 2 ? 2 * dogAge : 16 + dogAge * 4))
-    .filter((age)=> age >= 18)
-    .reduce((accum, age, i, arr) => accum + age / arr.length, 0);
-    // const average = adultAges.reduce((acc, age, i, arr) {
-    //     acc + age / arr.length;
-    // })
+// const calcAverageHumanAga = function(ages) {
+//     const humanAges =  ages
+//     .map((dogAge)=>(dogAge <= 2 ? 2 * dogAge : 16 + dogAge * 4))
+//     .filter((age)=> age >= 18)
+//     .reduce((accum, age, i, arr) => accum + age / arr.length, 0);
+//     // const average = adultAges.reduce((acc, age, i, arr) {
+//     //     acc + age / arr.length;
+//     // })
    
-    console.log(`The Average ages of dog's is ${Math.trunc(humanAges)}`);
-}
-calcAverageHumanAga( [5, 2, 4, 1, 15, 8, 3]);
-calcAverageHumanAga( [16, 6, 10, 5, 6, 1, 4]);
+//     console.log(`The Average ages of dog's is ${Math.trunc(humanAges)}`);
+// }
+// calcAverageHumanAga( [5, 2, 4, 1, 15, 8, 3]);
+// calcAverageHumanAga( [16, 6, 10, 5, 6, 1, 4]);
 
-//                                     Chaining methods                   //
+// //                                     Chaining methods                   //
 
-const totalDepositUSD = movementsArr
-    .filter(mov=> mov > 0)
-    .map((mov, i , arr) => {return mov * euroToUsd;})
-    .reduce((acc, current)=> acc + current, 0);
+// const totalDepositUSD = movementsArr
+//     .filter(mov=> mov > 0)
+//     .map((mov, i , arr) => {return mov * euroToUsd;})
+//     .reduce((acc, current)=> acc + current, 0);
 
-console.log(totalDepositUSD);
-
-
-
-//                                          The Find method                 //
+// console.log(totalDepositUSD);
 
 
-const first = movementsArr.find((value)=> value < 0);
-console.log(first);
 
-const accaunt = accaunts.find((user) => user.owner === 'Jessica Davis');
-console.log(accaunt);
+// //                                          The Find method                 //
+
+
+// const first = movementsArr.find((value)=> value < 0);
+// console.log(first);
+
+// const accaunt = accaunts.find((user) => user.owner === 'Jessica Davis');
+// console.log(accaunt);
 
 
 
