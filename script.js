@@ -185,14 +185,14 @@ btnClose.addEventListener('click', (e)=> {
     e.preventDefault();
     if(
         inputCloseUsername.value === currentAccaunt.username &&
-        Number(inputClosePin.value) === currentAccaunt.pin
+        Number(inputClosePin.value) === currentAccaunt.pin &&
+        amount > 0 &&
+        receriverAcc &&
+        currentAccaunt.balance >= amount &&
+        receriverAcc?.username !== currentAccaunt.username
     ) {
-       const index = accaunts.findIndex((acc)=> acc.username === currentAccaunt.username);
-       // DELETE accaunt
-       accaunts.splice(index, 1);
-       //HIDE accaunts
-       containerApp.style.opacity = 0;
-
+        currentAccaunt.movements.push(-amount);
+        receriverAcc.push(amount);
     }
     
     inputCloseUsername.value = inputClosePin.value = '';
