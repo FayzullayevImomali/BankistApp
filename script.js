@@ -76,7 +76,7 @@ const displayMovements  = function (movements) {
         const type = mov > 0 ? 'deposit' : 'withdrawal';
         const html = `
             <div class="movements__row">
-                <div class="movements__type movements__type--${type}">${index}</div>
+                <div class="movements__type movements__type--${type}">${type}</div>
                 <div class="movements__value">${mov} EUR</div>
             </div>
         `;
@@ -128,12 +128,12 @@ const createUserName = function (accs) {
 createUserName(accaunts);
 
 const updateUI = function (acc) {
-    // Display movements
-        displayMovements(acc?.movements);
+     // Display movements
+    displayMovements(acc.movements); 
     // Display balance
-        calcDisplayBalance(acc);
+    calcDisplayBalance(acc);
     // Display summary
-        calcDisplaySummary(acc);
+    calcDisplaySummary(acc);   
 }
 
 //Event handler
@@ -196,6 +196,22 @@ btnClose.addEventListener('click', (e)=> {
     }
     
     inputCloseUsername.value = inputClosePin.value = '';
+});
+
+btnLoan.addEventListener('click', (e)=> {
+    e.preventDefault();
+    const amount = Number(inputLoanAmount.value);
+
+    if(amount > 0 && currentAccaunt.movements.some((mov)=> mov > amount * 0.1)) {
+        // Add movement
+        currentAccaunt.movements.push(amount);
+
+        // Update UI
+        updateUI(currentAccaunt);
+
+    }
+
+    inputLoanAmount.value = '';
 });
 
 
@@ -335,6 +351,15 @@ const euroToUsd = 1.1;
 // const accaunt = accaunts.find((user) => user.owner === 'Jessica Davis');
 // console.log(accaunt);
 
+
+//                                Some and every methods          //
+
+// Some method
+
+console.log(movementsArr);
+console.log(movementsArr.includes(-130));
+
+console.log(movementsArr.some((mov)=> mov > 0));
 
 
 
