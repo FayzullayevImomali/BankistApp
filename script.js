@@ -183,19 +183,7 @@ btnTransfer.addEventListener('click', (e)=> {
 
 btnClose.addEventListener('click', (e)=> {
     e.preventDefault();
-    if(
-        inputCloseUsername.value === currentAccaunt.username &&
-        Number(inputClosePin.value) === currentAccaunt.pin &&
-        amount > 0 &&
-        receriverAcc &&
-        currentAccaunt.balance >= amount &&
-        receriverAcc?.username !== currentAccaunt.username
-    ) {
-        currentAccaunt.movements.push(-amount);
-        receriverAcc.push(amount);
-    }
     
-    inputCloseUsername.value = inputClosePin.value = '';
 });
 
 btnLoan.addEventListener('click', (e)=> {
