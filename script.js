@@ -72,7 +72,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 const displayMovements  = function (movements) {
     containerMovements.innerHTML = '';
-    movements.forEach((mov, index)=>{
+    movements?.forEach((mov, index)=>{
         const type = mov > 0 ? 'deposit' : 'withdrawal';
         const html = `
             <div class="movements__row">
@@ -86,7 +86,7 @@ const displayMovements  = function (movements) {
 
 
 const calcDisplayBalance = function (accaunt) {
-    accaunt.balance = accaunt.movements.reduce((accum, current)=> {
+    accaunt.balance = accaunt?.movements.reduce((accum, current)=> {
         return accum + current;
     },0);
     labeleBalance.textContent = `${accaunt.balance} UZS`;
@@ -129,7 +129,7 @@ createUserName(accaunts);
 
 const updateUI = function (acc) {
      // Display movements
-    displayMovements(acc.movements); 
+    displayMovements(acc?.movements); 
     // Display balance
     calcDisplayBalance(acc);
     // Display summary
@@ -183,7 +183,13 @@ btnTransfer.addEventListener('click', (e)=> {
 
 btnClose.addEventListener('click', (e)=> {
     e.preventDefault();
-    
+    if(inputCloseUsername?.value === currentAccaunt.username
+        && Number(inputClosePin?.value) === currentAccaunt?.pin){
+            const index = accaunts.findIndex(acc=> acc.username === currentAccaunt.username)
+            accaunts.splice(index, 1);
+            containerApp.style.opacity = 0;
+        }
+        inputCloseUsername.value = inputClosePin.value = '';
 });
 
 btnLoan.addEventListener('click', (e)=> {
