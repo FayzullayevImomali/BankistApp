@@ -354,13 +354,3 @@ console.log(movementsArr);
 console.log(movementsArr.includes(-130));
 
 console.log(movementsArr.some((mov)=> mov > 0));
-
-
-
-
-
-
-
-
-
-
