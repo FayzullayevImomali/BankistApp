@@ -77,7 +77,7 @@ const displayMovements  = function (movements) {
         const html = `
             <div class="movements__row">
                 <div class="movements__type movements__type--${type}">${type}</div>
-                <div class="movements__value">${mov} EUR</div>
+                <div class="movements__value">${mov} UZS</div>
             </div>
         `;
         containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -97,12 +97,12 @@ const calcDisplaySummary = function (accaunt) {
     const incomes = accaunt.movements
         .filter((mov)=> mov > 0)
         .reduce((accum, mov)=> accum + mov, 0 );
-    labalSumIn.textContent = `${incomes} EUR`;
+    labalSumIn.textContent = `${incomes} UZS`;
 
     const outgoing = accaunt.movements
         .filter((mov)=> mov < 0)
         .reduce((accum, mov)=> accum + mov, 0);
-    labelSumOut.textContent = `${Math.abs(outgoing)} EUR`;   
+    labelSumOut.textContent = `${Math.abs(outgoing)} UZS`;   
     
     const interest = accaunt.movements
         .filter((mov)=> mov > 0)
@@ -111,7 +111,7 @@ const calcDisplaySummary = function (accaunt) {
             return int >= 1;
         })
         .reduce((accum, interest)=> accum + interest, 0)
-    labelSumInterest.textContent = `${interest} EUR`;      
+    labelSumInterest.textContent = `${interest} UZS`;      
 }
 
 
@@ -354,3 +354,67 @@ console.log(movementsArr);
 console.log(movementsArr.includes(-130));
 
 console.log(movementsArr.some((mov)=> mov > 0));
+//                               call and bind methods                //
+
+// call method
+const lufthanza = {
+    airline: 'LuftHanza',
+    iataCode: 'LH',
+    booking: [],
+    bookFunc(flightNum, name) {
+        console.log(`${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`)
+        this.booking.push(`${name} booked a seat on ${this.airline}`, name);
+    }
+
+}
+console.log(lufthanza)
+
+lufthanza.bookFunc(12, 'Fayzullayev Imomali');
+
+const euroWings = {
+    airline: 'Eurowings',
+    iataCode: 'EUR',
+    booking: [],
+}
+
+
+const book = lufthanza.bookFunc;
+book.call(euroWings, 239 , 'Alex Cameron');
+console.log(euroWings);
+
+const persone = {
+    firstname: 'Mary',
+    lastname: 'Davis',
+    gender: 'male',
+    age: 25,
+    job: 'teacher',
+    displayData() {
+        const gender = this.gender === 'female' ? 'she is' : 'he is';
+        console.log(`this is ${this.firstname} ${this.lastname} ${gender} ${this.age} and ${gender} a ${this.job}`);
+    }
+};
+
+persone.displayData();
+
+const persone2 = {
+    firstname: 'Jessica',
+    lastname: 'Smith',
+    gender: 'female',
+    age: 32,
+    job: 'Devops enginer',
+}
+
+const displayData = persone.displayData;
+displayData.call(persone2);
+
+
+// bind method 
+
+const bookEW = book.bind(euroWings);
+const bookLH = book.bind(lufthanza);
+
+bookEW(400, 'Steven William');
+bookLH(500, 'Ali Fayzullayev');
+
+
+
