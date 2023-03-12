@@ -42,6 +42,8 @@ const accaunt5 = {
 
 const accaunts = [accaunt1, accaunt2, accaunt3, accaunt4, accaunt5];
 
+
+
 //                  Elements          //
 const labelWelcome = document.querySelector('.welcome');
 const labelData = document.querySelector('.date');
@@ -126,6 +128,7 @@ const createUserName = function (accs) {
 };
 
 createUserName(accaunts);
+
 
 const updateUI = function (acc) {
      // Display movements
@@ -213,7 +216,7 @@ btnLoan.addEventListener('click', (e)=> {
 
 const myFish = ["angel", "clown", "mandarin", "sturgeon"];
 const removed = myFish.splice(2, 0, "drum");
-console.log(myFish);
+// console.log(myFish);
 
 
 
@@ -350,71 +353,72 @@ const euroToUsd = 1.1;
 
 // Some method
 
-console.log(movementsArr);
-console.log(movementsArr.includes(-130));
+// console.log(movementsArr);
+// console.log(movementsArr.includes(-130));
 
-console.log(movementsArr.some((mov)=> mov > 0));
-//                               call and bind methods                //
+// console.log(movementsArr.some((mov)=> mov > 0));
+// //                               call and bind methods                //
 
 // call method
-const lufthanza = {
-    airline: 'LuftHanza',
-    iataCode: 'LH',
-    booking: [],
-    bookFunc(flightNum, name) {
-        console.log(`${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`)
-        this.booking.push(`${name} booked a seat on ${this.airline}`, name);
-    }
+// const lufthanza = {
+//     airline: 'LuftHanza',
+//     iataCode: 'LH',
+//     booking: [],
+//     bookFunc(flightNum, name) {
+//         console.log(`${name} booked a seat on ${this.airline} flight ${this.iataCode}${flightNum}`)
+//         this.booking.push(`${name} booked a seat on ${this.airline}`, name);
+//     }
 
-}
-console.log(lufthanza)
+// }
+// console.log(lufthanza)
 
-lufthanza.bookFunc(12, 'Fayzullayev Imomali');
+// lufthanza.bookFunc(12, 'Fayzullayev Imomali');
 
-const euroWings = {
-    airline: 'Eurowings',
-    iataCode: 'EUR',
-    booking: [],
-}
-
-
-const book = lufthanza.bookFunc;
-book.call(euroWings, 239 , 'Alex Cameron');
-console.log(euroWings);
-
-const persone = {
-    firstname: 'Mary',
-    lastname: 'Davis',
-    gender: 'male',
-    age: 25,
-    job: 'teacher',
-    displayData() {
-        const gender = this.gender === 'female' ? 'she is' : 'he is';
-        console.log(`this is ${this.firstname} ${this.lastname} ${gender} ${this.age} and ${gender} a ${this.job}`);
-    }
-};
-
-persone.displayData();
-
-const persone2 = {
-    firstname: 'Jessica',
-    lastname: 'Smith',
-    gender: 'female',
-    age: 32,
-    job: 'Devops enginer',
-}
-
-const displayData = persone.displayData;
-displayData.call(persone2);
+// const euroWings = {
+//     airline: 'Eurowings',
+//     iataCode: 'EUR',
+//     booking: [],
+// }
 
 
-// bind method 
+// const book = lufthanza.bookFunc;
+// book.call(euroWings, 239 , 'Alex Cameron');
+// console.log(euroWings);
 
-const bookEW = book.bind(euroWings);
-const bookLH = book.bind(lufthanza);
+// const persone = {
+//     firstname: 'Mary',
+//     lastname: 'Davis',
+//     gender: 'male',
+//     age: 25,
+//     job: 'teacher',
+//     displayData() {
+//         const gender = this.gender === 'female' ? 'she is' : 'he is';
+//         console.log(`this is ${this.firstname} ${this.lastname} ${gender} ${this.age} and ${gender} a ${this.job}`);
+//     }
+// };
 
-bookEW(400, 'Steven William');
-bookLH(500, 'Ali Fayzullayev');
+// persone.displayData();
+
+// const persone2 = {
+//     firstname: 'Jessica',
+//     lastname: 'Smith',
+//     gender: 'female',
+//     age: 32,
+//     job: 'Devops enginer',
+// }
+
+// const displayData = persone.displayData;
+// displayData.call(persone2);
+
+
+// // bind method 
+
+// const bookEW = book.bind(euroWings);
+// const bookLH = book.bind(lufthanza);
+
+// bookEW(400, 'Steven William');
+// bookLH(500, 'Ali Fayzullayev');
+
 
 
 
