@@ -353,10 +353,11 @@ const euroToUsd = 1.1;
 
 // Some method
 
-// console.log(movementsArr);
-// console.log(movementsArr.includes(-130));
 
-// console.log(movementsArr.some((mov)=> mov > 0));
+
+
+
+
 // //                               call and bind methods                //
 
 // call method
