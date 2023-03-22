@@ -60,7 +60,7 @@ const btnLogin = document.querySelector('.login__btn');
 const btnTransfer = document.querySelector('.form__btn--transfer');
 const btnLoan = document.querySelector('.form__btn--loan');
 const btnClose = document.querySelector('.form__btn--close');
-const btnSort = document.querySelector('.btn-sort');
+const btnSort = document.querySelector('.btn--sort');
 
 const inputLoginUsername = document.querySelector('.login__input--user');
 const inputLoginPin = document.querySelector('.login__input--pin');
@@ -70,11 +70,15 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
+
 //                         gooo               //
 
-const displayMovements  = function (movements) {
+const displayMovements  = function (movements, sort = false) {
     containerMovements.innerHTML = '';
-    movements?.forEach((mov, index)=>{
+
+    const movements_sort = sort ? movements.slice().sort((a, b)=> a - b) : movements;
+
+    movements_sort?.forEach((mov, index)=> {
         const type = mov > 0 ? 'deposit' : 'withdrawal';
         const html = `
             <div class="movements__row">
@@ -83,7 +87,7 @@ const displayMovements  = function (movements) {
             </div>
         `;
         containerMovements.insertAdjacentHTML('afterbegin', html);
-    })
+    });
 }
 
 
@@ -190,6 +194,7 @@ btnClose.addEventListener('click', (e)=> {
         && Number(inputClosePin?.value) === currentAccaunt?.pin){
             const index = accaunts.findIndex(acc=> acc.username === currentAccaunt.username)
             accaunts.splice(index, 1);
+            //Hide UI 
             containerApp.style.opacity = 0;
         }
         inputCloseUsername.value = inputClosePin.value = '';
@@ -210,6 +215,40 @@ btnLoan.addEventListener('click', (e)=> {
 
     inputLoanAmount.value = '';
 });
+
+let sorted = false;
+
+btnSort.addEventListener('click', function(e) {
+    e.preventDefault();
+    displayMovements(currentAccaunt.movements, !sorted);
+    sorted = !sorted;
+});
+const movementsArr = [232, -2334, -130, 12000, -6840, -9000, 5600];
+
+
+//                                 Sort Method               //
+
+//Strings
+const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
+
+console.log(owners.sort());
+console.log(owners);
+// the sort method changes the original array and effects to it! 
+console.log(movementsArr);
+//return < 0, A, B (keeps order)
+//return > 0, B, A (changing order)
+movementsArr.sort((a, b)=> {
+    if(a > b) return 1;
+    if(b > a) return -1;
+} );
+
+console.log(movementsArr);
+
+const points = [40, -100, 150, 200, 250, -300];
+
+console.log(points.sort());
+
+
 
 
 
@@ -271,7 +310,7 @@ const euroToUsd = 1.1;
 
 //                                       Filter method                    //
 
- const movementsArr = [232, -2334, 5000, 12000, -6840, -9000, 5600];
+ 
 
 // const deposits = movementsArr.filter(function(mov) {
 //     return mov > 0;
@@ -352,6 +391,20 @@ const euroToUsd = 1.1;
 //                                Some and every methods          //
 
 // Some method
+// QUALITY
+// console.log(movementsArr.includes(-130));
+
+
+// // CONDITIONS
+// const anyDeposits = movementsArr.some(mov=> mov < 5000);
+// console.log(anyDeposits);
+
+// // Every method
+
+// console.log(accaunt3.movements.every(mov => mov > 0));
+// console.log(accaunt4.movements.every(mov => mov > 0));
+
+
 
 
 
@@ -419,6 +472,65 @@ const euroToUsd = 1.1;
 
 // bookEW(400, 'Steven William');
 // bookLH(500, 'Ali Fayzullayev');
+
+//                                 Find index method             //
+// const incomeMoney = [23, 22, 33 ,444];
+
+// const spendMoney = incomeMoney[3];
+
+// const indexIncome = incomeMoney.findIndex(inc=> inc === spendMoney);
+// console.log(indexIncome);
+
+// const ages = [3, 10, 18, 20];
+
+// const checkAge = function (age) {
+//     return age > 18
+// }
+
+// const adults = ages.findIndex(checkAge);
+// console.log(adults);
+
+//                                                  Flat and Flat map methods                     //
+       // flat method
+// const arr = [[1, 2, 3], [4, 5, 6], 7, 8];
+
+// console.log(arr.flat());
+
+// const arrDeep = [['apelsin',['banan', 'mandarin']], ['potato', ['tomato', 'orange', 'cheer']], 8, 9];
+
+// console.log(arrDeep.flat(2));
+
+// //Calculating all movements form accounts
+// const accountMovements = accaunts.map(acc => acc.movements);
+// console.log(accountMovements);
+
+// const allMovements = accountMovements.flat();
+// console.log(allMovements);
+
+// const overalBalance = allMovements.reduce((accum , mov) => accum + mov, 0);
+// console.log(overalBalance);
+
+// const overalBalance = accaunts
+// .map(function(acc){
+//     return acc.movements
+// })
+// .flat()
+// .reduce(function(accum, mov) {
+//     return accum + mov
+// });
+// console.log(overalBalance);
+
+
+// //  flatMap method
+// const overalBalance2 = accaunts
+// .flatMap(acc=> acc.movements)
+// .reduce(function(accum, mov) {
+//     return accum + mov
+// });
+
+// console.log(overalBalance2);
+
+
 
 
 
