@@ -231,10 +231,10 @@ const movementsArr = [232, -2334, -130, 12000, -6840, -9000, 5600];
 //Strings
 const owners = ['Jonas', 'Zach', 'Adam', 'Martha'];
 
-console.log(owners.sort());
-console.log(owners);
+// console.log(owners.sort());
+// console.log(owners);
 // the sort method changes the original array and effects to it! 
-console.log(movementsArr);
+// console.log(movementsArr);
 //return < 0, A, B (keeps order)
 //return > 0, B, A (changing order)
 movementsArr.sort((a, b)=> {
@@ -242,11 +242,11 @@ movementsArr.sort((a, b)=> {
     if(b > a) return -1;
 } );
 
-console.log(movementsArr);
+// console.log(movementsArr);
 
 const points = [40, -100, 150, 200, 250, -300];
 
-console.log(points.sort());
+console.log(points.sort((a, b)=> b - a));
 
 
 
@@ -530,7 +530,22 @@ const euroToUsd = 1.1;
 
 // console.log(overalBalance2);
 
+//1
+const bankDepositSumm = accaunts.map((acc)=> acc.movements)
+.flat()
+.filter((acc)=> acc > 0)
+.reduce((summa, acc)=> summa + acc , 0);
 
+//2 
+
+// const numDeposit1000 = accaunts.flatMap((acc)=> acc.movements)
+// .filter((acc)=> acc >= 1000).length;
+
+const numDeposit1000 = accaunts.flatMap((acc)=> acc.movements)
+.reduce((count, current)=> (current >= 1000 ? count + 1 : count),0);
+
+console.log(bankDepositSumm);
+console.log(numDeposit1000);
 
 
 
