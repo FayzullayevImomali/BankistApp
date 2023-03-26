@@ -225,6 +225,8 @@ btnSort.addEventListener('click', function(e) {
 });
 const movementsArr = [232, -2334, -130, 12000, -6840, -9000, 5600];
 
+alert('Hello new sction');
+
 
 
 
