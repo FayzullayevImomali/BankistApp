@@ -542,10 +542,38 @@ const bankDepositSumm = accaunts.map((acc)=> acc.movements)
 // .filter((acc)=> acc >= 1000).length;
 
 const numDeposit1000 = accaunts.flatMap((acc)=> acc.movements)
-.reduce((count, current)=> (current >= 1000 ? count + 1 : count),0);
+.reduce((count, current)=> (current >= 1000 ? ++count : count),0);
+
+//3 
+//creating object with reduce method
+
+const sums = accaunts.flatMap((acc)=> acc.movements)
+.reduce(
+    (sum, curr)=> {
+        // curr > 0 ? (sum.deposits += curr) : (sum.withdrawals += curr);
+        sum[curr > 0 ? 'deposits' : 'withdrawals'] += curr;
+        return sum;
+    },
+    {deposits: 0, withdrawals: 0}
+);
+
+//4 this is a nice title -> This Is a Nice Title
+const convertTitleCase = function (title) {
+    const capitalize = str => str[0].toUpperCase() + str.slice(1);
+    const exceptions = ['a', 'an', 'and', 'the', 'but', 'or', 'in', 'with'];
+    const titleCase = title.toLowerCase().split(' ').map((word)=> (exceptions.includes(word) ? word : capitalize(word))).join(' ');
+    
+    return capitalize(titleCase);
+}
+
+console.log(sums);
 
 console.log(bankDepositSumm);
 console.log(numDeposit1000);
+
+console.log(convertTitleCase('this is a nice title'));
+console.log(convertTitleCase('this is extremely important think'));
+console.log(convertTitleCase('and here is another title with an example'));
 
 
 
