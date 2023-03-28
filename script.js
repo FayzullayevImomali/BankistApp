@@ -98,6 +98,8 @@ const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
 
+
+
 //                         gooo               //
 
 const displayMovements  = function (movements, sort = false) {
@@ -110,19 +112,20 @@ const displayMovements  = function (movements, sort = false) {
         const html = `
             <div class="movements__row">
                 <div class="movements__type movements__type--${type}">${type}</div>
-                <div class="movements__value">${mov} ${currentAccaunt.currency}</div>
+                <div class="movements__value">${mov.toFixed(2)} ${currentAccaunt.currency}</div>
             </div>
         `;
         containerMovements.insertAdjacentHTML('afterbegin', html);
     });
+
 }
 
 
 const calcDisplayBalance = function (accaunt) {
     accaunt.balance = accaunt?.movements.reduce((accum, current)=> {
         return accum + current;
-    },0);
-    labeleBalance.textContent = `${accaunt.balance} ${currentAccaunt.currency}`;
+    }, 0);
+    labeleBalance.textContent = `${accaunt.balance.toFixed(2)} ${currentAccaunt.currency}`;
 }
 
 
@@ -130,12 +133,12 @@ const calcDisplaySummary = function (accaunt) {
     const incomes = accaunt.movements
         .filter((mov)=> mov > 0)
         .reduce((accum, mov)=> accum + mov, 0 );
-    labalSumIn.textContent = `${incomes} UZS`;
+    labalSumIn.textContent = `${incomes.toFixed()} ${currentAccaunt.currency}`;
 
     const outgoing = accaunt.movements
         .filter((mov)=> mov < 0)
         .reduce((accum, mov)=> accum + mov, 0);
-    labelSumOut.textContent = `${Math.abs(outgoing)} UZS`;   
+    labelSumOut.textContent = `${Math.abs(outgoing)} ${currentAccaunt.currency}`;   
     
     const interest = accaunt.movements
         .filter((mov)=> mov > 0)
@@ -144,7 +147,7 @@ const calcDisplaySummary = function (accaunt) {
             return int >= 1;
         })
         .reduce((accum, interest)=> accum + interest, 0)
-    labelSumInterest.textContent = `${interest} UZS`;      
+    labelSumInterest.textContent = `${interest.toFixed()} ${currentAccaunt.currency}`;      
 }
 
 
@@ -167,7 +170,12 @@ const updateUI = function (acc) {
     // Display balance
     calcDisplayBalance(acc);
     // Display summary
-    calcDisplaySummary(acc);   
+    calcDisplaySummary(acc);  
+    [...document.querySelectorAll('.movements__row')].forEach(function(row, i) {
+        if(i % 2 === 0) row.style.backgroundColor = '#f4f4f4';
+    }); 
+    console.log(movementsRow);
+
 }
 
 //Event handler
@@ -229,7 +237,7 @@ btnClose.addEventListener('click', (e)=> {
 
 btnLoan.addEventListener('click', (e)=> {
     e.preventDefault();
-    const amount = Number(inputLoanAmount.value);
+    const amount = Math.floor(inputLoanAmount.value);
 
     if(amount > 0 && currentAccaunt.movements.some((mov)=> mov > amount * 0.1)) {
         // Add movement
@@ -242,6 +250,7 @@ btnLoan.addEventListener('click', (e)=> {
 
     inputLoanAmount.value = '';
 });
+
 
 let sorted = false;
 
@@ -257,34 +266,155 @@ console.log(23 === 23.0);
 //Base ten => 10 - 0 to 9
 //Binar base 2 - 0 and 1
 
-console.log(0.1 + 0.2);
-console.log(0.1 + 0.2 === 0.3);
+// console.log(0.1 + 0.2);
+// console.log(0.1 + 0.2 === 0.3);
 
-console.log(Number('233'));
-console.log(+'333');
+// console.log(Number('233'));
+// console.log(+'333');
 
-//Parsing
+// //Parsing
 
-console.log(Number.parseInt('50px', 10));
+// console.log(Number.parseInt('50px', 10));
 
-console.log(Number.parseInt('e444', 10));
+// console.log(Number.parseInt('e444', 10));
 
-console.log(parseFloat('34.5rem', ));
-
-
-// IsNaN checking any value is not a number!
-
-console.log(isNaN(23));
-console.log(isNaN('y2333'));
-console.log(isNaN(23 / 0));
-console.log(isNaN(+'56x'));
+// console.log(parseFloat('34.5rem', ));
 
 
-console.log(Number.isFinite(20));
-console.log(Number.isFinite(+'333'));
-console.log(Number.isFinite(23.5));
+// // IsNaN checking any value is not a number!
 
-//               Math and Round
+// console.log(isNaN(23));
+// console.log(isNaN('y2333'));
+// console.log(isNaN(23 / 0));
+// console.log(isNaN(+'56x'));
+
+
+// console.log(Number.isFinite(20));
+// console.log(Number.isFinite(+'333'));
+// console.log(Number.isFinite(23.5));
+
+//                              Math and Round                    //
+
+//Квадратный корень
+
+// console.log(Math.sqrt(43));
+// console.log(25 ** (1 / 2));
+// console.log(Math.max(23, 44 , 66, '77'));
+
+// console.log(Math.min( 8, 23 ,55, 66, 77, 88));
+
+// console.log(Math.PI * Number.parseFloat('10px') ** 2);
+
+// console.log(Math.trunc(Math.random() * 6));
+
+// const randomInt = (min, max) => Math.trunc(Math.random() * (max - min ) + 1) + min;
+// console.log(randomInt(10 , 20));
+
+
+// console.log(Math.trunc(23.6));
+// //ceil method rounded number to largest number always will be rounded up
+// console.log(Math.ceil(34.6));
+// console.log(Math.ceil(55.3));
+
+// //Math.round() this method will round number to the nearest integer
+// console.log(Math.round(34.9));   
+// console.log(Math.round(34.5));
+
+// // always will be rounded down
+// console.log(Math.floor(66.9));
+
+
+// //                     Rounding decimals                         //
+
+// console.log((2.7).toFixed(0)); // toFixed method always returns string 
+// console.log((2.7).toFixed(3));
+
+// //            Reminder Operator                 //
+
+
+// console.log(5 % 2);
+// console.log(8 % 4);
+
+// //function checking the number is even or odd
+
+// const isEven = function(n){
+//     return n % 2 === 0;
+// };
+
+// console.log(isEven(32));
+
+// //              Numeric Separetor              //
+
+// const diameter = 345_674_430_000_000;
+// // 234,567,443,000,000
+
+// console.log(diameter);
+
+// const priceCents = 345_99;
+// console.log(priceCents);
+
+
+// const transferFree = 15_000; // we cannot use underscore directly to
+// // covert string to number, we should use only in a code
+// const transferFree2 = 1_500;
+// console.log(transferFree);
+// console.log(transferFree2);
+// console.log(Number(transferFree));
+
+// //             Working with BigInt (BIG INTEGER)             //   
+
+// console.log(2 ** 53 - 1);
+// // this maxumum integers which js can work, 
+// //more than this js cannot represent accurately
+
+// // but with special data type js can work with large integers
+// console.log(2 ** 53 + 1);;
+// console.log(2 ** 53 + 2);
+// console.log(2 ** 53 + 3);
+// console.log(2 ** 53 + 4);
+
+// let bigInteger = BigInt(999999999999999);
+// console.log(typeof bigInteger);
+
+// const huge = 909667567445408798798n;
+// const num = 34;
+// console.log(huge * BigInt(num));
+
+// console.log(234n > 34);
+// console.log(20n === 20);
+// console.log(25n == '25');
+// console.log(12n / 3n);
+// console.log(10 / 3);
+
+// console.log(huge + ' is REALLY BIG!!!');// Type cuortion here happening!
+
+
+
+//                            Creating Date ()                   //
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+ 
+
+
 
 
 
