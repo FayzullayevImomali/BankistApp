@@ -112,16 +112,25 @@ const inputClosePin = document.querySelector('.form__input--pin');
 
 //                         gooo               //
 
-const displayMovements  = function (movements, sort = false) {
+const displayMovements  = function (acc, sort = false) {
     containerMovements.innerHTML = '';
 
-    const movements_sort = sort ? movements.slice().sort((a, b)=> a - b) : movements;
+    const movements_sort = sort ? acc.movements.slice().sort((a, b)=> a - b) : acc.movements;
 
     movements_sort?.forEach((mov, index)=> {
         const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+        const date = new Date(acc.movementsDates[index]);
+        const day = `${date.getDate()}`.padStart(2, 0);
+        const month = `${date.getMonth() + 1}`.padStart(2, 0);
+        const year = date.getFullYear();
+
+        const displayDate = `${day}/${month}/${year}`;
+
         const html = `
             <div class="movements__row">
                 <div class="movements__type movements__type--${type}">${type}</div>
+                <div class="movements__date">${displayDate}</div>
                 <div class="movements__value">${mov.toFixed(2)} ${currentAccaunt.currency}</div>
             </div>
         `;
@@ -176,7 +185,7 @@ createUserName(accaunts);
 
 const updateUI = function (acc) {
      // Display movements
-    displayMovements(acc?.movements); 
+    displayMovements(acc); 
     // Display balance
     calcDisplayBalance(acc);
     // Display summary
@@ -184,12 +193,16 @@ const updateUI = function (acc) {
     [...document.querySelectorAll('.movements__row')].forEach(function(row, i) {
         if(i % 2 === 0) row.style.backgroundColor = '#f4f4f4';
     }); 
-    console.log(movementsRow);
-
+    
 }
 
 //Event handler
 let currentAccaunt;
+
+//FAKED ALWAYS LOGGED IN
+currentAccaunt = accaunt1;
+updateUI(currentAccaunt);
+containerApp.style.opacity = 100;
 
 btnLogin.addEventListener('click', (e)=> {
     //Prevent form from submitting
@@ -201,9 +214,19 @@ btnLogin.addEventListener('click', (e)=> {
     // Display UI and message
         labelWelcome.textContent = `Welcome back, ${currentAccaunt.owner.split(' ')[0]}`;
         containerApp.style.opacity = 100;
+    
+    //Create current date time
+    const now = new Date();
+    const day = `${now.getDate()}`.padStart(2, 0);
+    const month = `${now.getMonth() + 1}`.padStart(2, 0);
+    const year = now.getFullYear();
+    const hour = `${now.getHours()}`.padStart(2, '0');
+    const minut = `${now.getMinutes()}`.padStart(2, '0');
+    console.log(month);
+    labelData.textContent = ` ${day}/${month}/year, ${hour}:${minut}`;    
 
     //Clear input field
-        inputLoginUsername.value = inputLoginPin.value = '';
+    inputLoginUsername.value = inputLoginPin.value = '';
         
     }
     inputLoginPin.blur();  
@@ -226,9 +249,13 @@ btnTransfer.addEventListener('click', (e)=> {
     ) {
         currentAccaunt.movements.push(-amount);
         receiverAcc.movements.push(amount);
+        //Add transfer date
+        currentAccaunt.movementsDates.push(new Date().toISOString());
+        receiverAcc.movementsDates.push(new Date().toISOString());
         // Update UI
         updateUI(currentAccaunt);
     }
+    
     inputTransferAmount.value = inputTransferTo.value = '';
 
 });
@@ -253,6 +280,9 @@ btnLoan.addEventListener('click', (e)=> {
         // Add movement
         currentAccaunt.movements.push(amount);
 
+        //Add loan date
+        currentAccaunt.movementsDates.push(new Date().toISOString());
+    
         // Update UI
         updateUI(currentAccaunt);
 
@@ -416,23 +446,34 @@ console.log(23 === 23.0);
 
 // //Working with dates
 
-const future = new Date(2037, 11, 19, 15, 23, 5);
-console.log(future);
+// const future = new Date(2037, 11, 19, 15, 23, 5);
+// console.log(future);
 
-console.log(future.getFullYear());
-console.log(future.getMonth());
-console.log(future.getDay());
-console.log(future.getHours());
-console.log(future.getMinutes());
-console.log(future.getSeconds());
+// console.log(future.getFullYear());
+// console.log(future.getMonth());
+// console.log(future.getDay());
+// console.log(future.getHours());
+// console.log(future.getMinutes());
+// console.log(future.getSeconds());
 
-console.log(future.toISOString());
+// console.log(future.toISOString());
 
-console.log(future.getTime());
-console.log(new Date(2144830985000));
+// console.log(future.getTime());
+// console.log(new Date(2144830985000));
 
-console.log(Date.now());
+//console.log(Date.now());
 
+// const str1 = '5';
+// console.log(str1.padStart(str1.length + 2,'0'));
+// const fullNumber = '203439900313';
+// const last4Digits = fullNumber.slice(-4);
+// const maskedNumbers = last4Digits.padStart(fullNumber.length , '*');
+// console.log(maskedNumbers);
+
+// const myPassword = 'password!!123';
+// const last4charecter = myPassword.slice(-4);
+// const masked4Char = last4charecter.padStart(myPassword.length, '$');
+// console.log(masked4Char);
 
 
 
